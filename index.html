@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1.0">
+    <title>Sube fotografías</title>
+</head>
+
+<body>
+    <form>
+        <label for="imgs">Seleccione todas las imágenes que desee subir</label>
+        <input type="file" name="imgs" accept="image/*" onchange="selfSubmitForm(event)" multiple>
+    </form>
+
+
+    <script>
+        function selfSubmitForm(evt) {     
+            //console.log(obtainImages(evt));       
+            //now let's a pop up tha modal
+            target.closest("form").reset();
+        }
+    </script>
+    <script>
+        function obtainImages(evt) {
+            var files = evt.target.files; // FileList object
+            var leImages = [];
+
+            // Loop through the FileList and render image files as thumbnails.
+            for (var i = 0; i < (files.length-1); i++) {
+                let f = files[i]; //le current file
+                // Only process image files.
+                if (!f.type.match('image.*')) {
+                    continue;
+                }
+
+                var reader = new FileReader();
+
+                // Closure to capture the file information.
+                reader.onload = (function (theFile) {
+                    return function (e) {
+                        // Create an Image object
+                        var img = new Image();
+                        img.src = e.target.result;
+
+                        // Do something with the Image object
+                        // document.body.appendChild(img);
+                        leImages.push(img);
+                    };
+                })(f);
+                // Read in the image file as a data URL.
+                reader.readAsDataURL(f);
+            }
+            // console.log(leImages) // k, i have them as a img element with a blob as a source
+            return leImages;
+        }
+    </script>
+
+
+</body>
+
+</html>
+
+
